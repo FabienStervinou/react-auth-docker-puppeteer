@@ -1,0 +1,110 @@
+.App {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: 1em;
+  color: rgb(245, 245, 245);
+
+}
+
+.App-header {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+
+
+  background-color: #21242b;
+}
+
+.App-main {
+  display: flex;
+  height: calc(100vh - 140px);
+  list-style-type: none;
+}
+
+
+nav ul li a {
+  color: rgb(245, 245, 245);
+  text-decoration: none;
+  list-style: none;
+  height: 100%;
+  width: 100%;
+}
+
+nav ul li {
+  list-style: none;
+  height: 100%;
+  width: 100%;
+  min-width: 100px;
+  justify-content: space-between;
+  display: flex;
+  
+}
+
+nav ul li a {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: ease-in-out .3s;
+}
+
+nav ul li a:hover {
+  background-color: #198551;
+  transition: ease-in-out .3s;
+  color: rgb(216, 216, 216);
+}
+
+nav ul {
+  margin: 0;
+}
+
+.App-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  font-size: .7em;
+  color: #0fcf72;
+  background-color: #21242b;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+}
+
+
+
+
+
+
+
+
+
+
+

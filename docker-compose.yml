@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: 'mongo'
+    restart: always
+    ports:
+      - '27017-27019:27017-27019'
+    volumes:
+      # - ./db/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./apps/db:/data/db
+
+  api:
+    build: ./apps/api
+    restart: always
+    ports:
+      - '5000:5000'
+    links:
+      - mongodb
+    volumes:
+      - ./apps/api:/api:cached
+    depends_on:
+      - mongodb
+    links:
+      - app
+    command: npm run dev
+
+  app:
+    build: ./apps/app
+    restart: always
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./apps/app:/app:cached
+    command: npm run start 
+
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - ./apps/nginx/conf.d:/etc/nginx/conf.d
+    links:
+      - api
+      - app
+    depends_on:
+      - mongodb
+      - api
+      - app
