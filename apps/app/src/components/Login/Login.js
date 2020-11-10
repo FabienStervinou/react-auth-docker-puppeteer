@@ -50,7 +50,7 @@ export const Login = (props) => {
         </section>
 
         <section className="submit">
-          <input id="login-submit" type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
+          <input id="login-submit" type="submit" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
         </section>
 
       </form>

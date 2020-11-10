@@ -58,7 +58,7 @@ export const Register = (props) => {
         </section>
 
         <section className="submit">
-          <input id="register-submit" type="button" value={loading ? 'Loading...' : 'Register'} onClick={handleRegister} disabled={loading} /><br />
+          <input id="register-submit" type="submit" value={loading ? 'Loading...' : 'Register'} onClick={handleRegister} disabled={loading} /><br />
         </section>
 
       </form>

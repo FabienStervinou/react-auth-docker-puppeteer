@@ -5,7 +5,6 @@ import axios from 'axios';
 import '../src/style/variable.scss'
 
 // Page component 
-// import { Home } from './components/Home'
 import { Login } from './components/Login/Login'
 import { Register } from './components/Register/Register'
 import { Logout } from './components/Logout'
