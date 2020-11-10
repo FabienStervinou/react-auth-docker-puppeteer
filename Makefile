@@ -9,13 +9,15 @@ restart:
 	make serve
 
 serve:
-	# docker-compose up --build -d
 	docker-compose up --build
+
+	## Puppeteer binary version 
+	PUPPETEER_PRODUCT=firefox npm install
+	docker-compose run app npm i puppeteer
 
 	## Bcrypt bug on Docker | need to be install on the container
 	docker-compose run api npm uninstall bcrypt
 	docker-compose run api npm install bcrypt
-	docker-compose run app npm rebuild node-sass
 
 docker-clean:
 	docker-compose down
