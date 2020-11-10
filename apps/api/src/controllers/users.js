@@ -1,7 +1,7 @@
 const User = require('../models/Users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { registerValidation, loginValidation } = require('../utils/validation')
+const { registerValidation, loginValidation, isEmail } = require('../utils/validation')
 
 
 const get = async (req, res, next) => {
@@ -19,33 +19,38 @@ const register = async (req, res,) => {
   const { error } = registerValidation(req.body);
   if (error) {
     var errorMessgae = error.details[0].message;
-    return res.status(400).send({'server_error': errorMessgae});
+    return res.status(401).send({'server_error': errorMessgae});
   }
 
-  // Verify if user already in the db
-  const emailExist = await User.findOne({
-    email: req.body.email
-  })
-  if (emailExist) {
-    return res.status(400).send({'server_error': 'Email already exists in the database'})
+  if (isEmail(req.body.email)) {
+    // Verify if user already in the db
+    const emailExist = await User.findOne({
+      email: req.body.email
+    })
+    if (emailExist) {
+      return res.status(401).send({'server_error': 'Email already exists in the database'})
+    }
+    
+    // Hash passwords
+    const salt = await bcrypt.genSalt(10)
+    const hashPassword = await bcrypt.hash(req.body.password, salt)
+  
+    const user = new User({
+      email: req.body.email,
+      password: hashPassword,
+      repeat_password: hashPassword,
+    });
+    try {
+      const savedUser = await user.save();
+      res.send({ 'id': user._id})
+    } catch (error) {
+      res.status(401).send('server_error', error)
+    }
+  } else {
+    return res.status(401).send({'server_error': 'Email is not valid'})
   }
 
-  // Hash passwords
-  const salt = await bcrypt.genSalt(10)
-  const hashPassword = await bcrypt.hash(req.body.password, salt)
 
-  const user = new User({
-    email: req.body.email,
-    password: hashPassword,
-    repeat_password: hashPassword,
-  });
-  try {
-    const savedUser = await user.save();
-    res.send({ 'id': user._id})
-  } catch (error) {
-    res.status(400).send('server_error', error)
-  }
-  // res.send({'server-success': 'Registration is success'});
 }
 
 const login = async (req, res) => {
@@ -57,27 +62,32 @@ const login = async (req, res) => {
     return res.status(401).send({'server_error': errorMessgae})
   }
 
-  // Verify if email exists in the db
-  const user = await User.findOne({
-    email: req.body.email
-  })
-  if (!user) {
-    return res.status(401).send({'server_error': 'Email adress not found'})
+  if (isEmail(req.body.email)) {
+
+    // Verify if email exists in the db
+    const user = await User.findOne({
+      email: req.body.email
+    })
+    if (!user) {
+      return res.status(401).send({'server_error': 'Email adress not found'})
+    }
+
+    // Verify if password is correct 
+    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    if (!validPassword) {
+      return res.status(401).send({'server_error': 'Password is not valid'})
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
+
+    res.header('auth-token', token).send({
+      'token': token,
+      'user': user,
+      'server-success': 'Logged in with success'
+    })
+  } else {
+    return res.status(401).send({'server_error': 'Email is not valid'})
   }
-
-  // Verify if password is correct 
-  const validPassword = await bcrypt.compare(req.body.password, user.password)
-  if (!validPassword) {
-    return res.status(401).send({'server_error': 'Password is not valid'})
-  }
-
-  const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
-
-  res.header('auth-token', token).send({
-    'token': token,
-    'user': user,
-    'server-success': 'Logged in with success'
-  })
 }
 
 const profile = async (req, res) => {
