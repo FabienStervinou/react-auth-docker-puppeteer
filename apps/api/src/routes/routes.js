@@ -6,7 +6,6 @@ const routes = app => {
   app.post('/users/profile', tokenRequired, UserController.profile)
   app.post('/register', UserController.register)
   app.post('/login', UserController.login)
-
   app.get('/verifyToken', tokenRequired, UserController.verifyToken)
 }
 
