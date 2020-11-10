@@ -5,7 +5,6 @@
   flex-direction: column;
   font-size: 1em;
   color: rgb(245, 245, 245);
-
 }
 
 .App-header {
@@ -71,21 +70,6 @@ nav ul {
   background-color: #21242b;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -97,14 +81,3 @@ nav ul {
   align-items: center;
   
 }
-
-
-
-
-
-
-
-
-
-
-

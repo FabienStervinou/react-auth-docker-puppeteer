@@ -2,12 +2,12 @@ import './App.css';
 import React, { useEffect, useState } from "react";
 import { Route, Link, Switch, BrowserRouter as Router, Redirect } from 'react-router-dom';
 import axios from 'axios';
-
+import '../src/style/variable.scss'
 
 // Page component 
 // import { Home } from './components/Home'
-import { Login } from './components/Login'
-import { Register } from './components/Register'
+import { Login } from './components/Login/Login'
+import { Register } from './components/Register/Register'
 import { Logout } from './components/Logout'
 import { Profile } from './components/Profile'
 import { LandingPage } from './components/LandingPage'
@@ -60,11 +60,8 @@ function App() {
           <nav className="App-header">
             <ul className='flex-row'>
               <li>
-                <Link to="/">Landing Page</Link>
+                <Link to="/">Home</Link>
               </li>
-              {/* <li>
-                <Link to="/home">Home</Link>
-              </li> */}
               <li>
                 <Link to="/login">Login</Link>
               </li>
@@ -84,7 +81,6 @@ function App() {
             <Switch>
               
               <Route exact path='/' component={ LandingPage }/>
-              {/* <PrivateRoute exact path='/home' component={ Home }/> */}
               <PublicRoute path='/login' component={ Login }/>
               <PublicRoute path='/register' component={ Register }/>
               <PrivateRoute path='/profile' component={ Profile }/>
